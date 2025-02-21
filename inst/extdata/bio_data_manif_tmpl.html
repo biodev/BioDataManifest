@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{{ DShortName }} BioMedical Data Manifest</title>
+
+	<!-- Bootstrap -->
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+	
+	<script type="text/javascript">
+        const persona_type = "{{ persona_type }}";
+		const collapse_div_names = ["InstDiag", "ClinDiag", "InstDiag", "SpecDiag"];
+
+        $(document).ready(function(){
+            
+			if (persona_type == "computationalist"){
+
+				for(let div_name in collapse_div_names){
+					$("#" + collapse_div_names[div_name]).removeClass("show");
+					$("#" + collapse_div_names[div_name] + "Cntrl").attr("aria-expanded", "false")
+				}
+			}
+		
+        });
+    </script>
+	
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+		integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+	<style type="text/css">
+		.font-size-main {
+			font-size: 1.3rem;
+		}
+
+		.font-size-sub {
+			font-size: 1.2rem;
+		}
+
+		.font-size-med {
+			font-size: 1.1rem;
+		}
+
+		/* from https://stackoverflow.com/questions/68467572/bootstrap-responsive-table-with-scrollable-tbody */
+		.tbodyDiv{
+			max-height: clamp(5em,50vh,1000px);*/
+			overflow: auto;
+		}
+
+	</style>
+</head>
+
+<body>
+	<div class="jumbotron jumbotron-fluid text-center">
+		<h1 class="display-4">BioMedical Data Manifest</h1>
+		<h2>{{ persona_type }}</h2>
+	</div>
+	<br>
+	<div class="container border">
+		<div class="row">
+			<div class="col-md-6 align-self-center">
+				<h4>{{ DName }}</h4>
+			</div>
+			<div class="col-md-6 border">
+				{{ DSummary }}<br>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 border card-header"><span class="font-size-sub"><em>General Information</em></span></div>
+		</div>
+		{% if HasCWarning %}
+		<div class="row">
+			<div class="col-md-12 border alert alert-danger" role="alert">
+				<ul class="list-unstyled">
+					<li><strong>Content Warning:</strong> {{ CWarning }}</li>
+				</ul>
+			</div>
+		</div>
+		{% endif %}
+		<div class="row">
+			<div class="col-md-6 border"><span class="font-size-med">LINKS</span></div>
+			<div class="col-md-6 border"><span class="font-size-med">DATA MANIFEST AUTHORS</span></div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border">
+				<ul class="list-unstyled">
+					<li><strong>Data Links:</strong>
+						{{ DataLinks }}
+					</li>
+					<li><strong>Documentation (If different):</strong> 
+						<ul>
+							{% for link in DDocLinks -%}
+                        		<li>{{ link }}</li>
+                    		{% endfor -%}
+						</ul>
+					</li>
+					{% if HasDAudit %}
+						<ul>
+							{% for val in DAudit -%}
+								<li>{{ val }}</li>
+							{% endfor -%}
+						</ul>
+					{% endif %}
+				</ul>
+			</div>
+			<div class="col-md-6 border">
+				<ul>
+					{% for val in DSAuthors -%}
+                        <li>{{ val }}</li>
+                    {% endfor -%}
+				</ul>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border"><span class="font-size-med">VERSION INFORMATION</span></div>
+			<div class="col-md-6 border"><span class="font-size-med">KEYWORDS</span></div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border">
+				<ul>
+					<li>Current Version: {{ DVersion }}</li>
+					{% if length(DOI) > 0 %}
+					<li>DOI: {{ DOI }}</li>
+					{% endif %}
+					<li>Release Date: {{ RelDate }}</li>
+					{% if length(LUDate) > 0 %}
+					<li>Last Updated: {{ LUDate }}</li>
+					{% endif %}
+				</ul>
+			</div>
+			<div class="col-md-6 border">
+				<ul>
+					{% for val in Keywords -%}
+                        <li>{{ val }}</li>
+                    {% endfor -%}
+				</ul>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 border"><span class="font-size-med">EXTENSION MECHANISMS</span></div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 border">
+				<ul class="list-unstyled">
+					{% for val in EMechanisms -%}
+                        <li>{{ val }}</li>
+                    {% endfor -%}
+				</ul>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4 border"><span class="font-size-med">OWNER/PUBLISHER</span></div>
+			<div class="col-md-8 border"><span class="font-size-med">CONTACT DETAILS</span></div>
+		</div>
+		<div class="row">
+			<div class="col-md-4 border">
+				<ul class="list-unstyled">
+					{% for val in DPublisher -%}
+                        <li>{{ val }}</li>
+                    {% endfor -%}
+				</ul>
+			</div>
+			<div class="col-md-8 border">
+				<ul class="list-unstyled" <li><strong>Dataset Contacts:</strong>
+					<ul>
+						{% for val in DContact -%}
+							<li>{{ val }}</li>
+                    	{% endfor -%}	
+					</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+		{% if FundingInfoAvail %}
+		<div class="row">
+			<div class="col-md-8 border"><span class="font-size-med">FUNDING OR GRANT SUMMARY(IES)</span></div>
+		</div>
+		<div class="row">
+			<div class="col-md-8 border">
+				<ul class="list-unstyled">
+					{% for row in FundingSummaries -%}
+                       {{ row }}
+                    {% endfor -%}
+				</ul>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+	<br>
+	<div class="container border">
+		<div class="row">
+			<div class="col-md-12 border card-header"><span class="font-size-main"> Uses of Data</span>
+			</div>
+		</div>
+		{% if DSuitUnsuitAvail %}
+		<div class="row">
+			<div class="col-md-6 border"><span class="font-size-med">{{ upper(DSuitableDesc) }}</span></div>
+			<div class="col-md-6 border"><span class="font-size-med">{{ upper(DUnsuitableDesc) }}</span></div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border">
+				<ul>
+					{% for row in DSuitable -%}
+                        <li>{{ row }}</li>
+                    {% endfor -%}
+				</ul>
+			</div>
+			<div class="col-md-6 border">
+				<ul>
+					{% for row in DUnsuitable -%}
+                        <li>{{ row }}</li>
+                    {% endfor -%}
+				</ul>
+			</div>
+		</div>
+		{% endif %}
+		<div class="row">
+			<div class="col-md-6 border"><span class="font-size-med">{{ upper(DImpactsDesc) }}</span></div>
+			<div class="col-md-6 border"><span class="font-size-med">{{ upper(AIUsesDesc) }}</span></div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border">
+				<ul>
+					{% for val in DImpacts -%}
+                        <li>{{ val }}</li>
+                    {% endfor -%}
+				</ul>
+			</div>
+			<div class="col-md-6 border">
+				<ul>
+					{% for val in AIUses -%}
+                        <li>{{ val }}</li>
+                    {% endfor -%}
+				</ul>
+			</div>
+		</div>
+		{% if ReqCite %}
+		<div class="row">
+			<div class="col-md-12 border"><span class="font-size-med">{{ upper(ReqCiteLinksDesc) }}</span></div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 border">
+		
+				<strong>When using this dataset please cite:</strong>
+				<ul>
+					{% for row in ReqCiteLinks -%}
+                        <li>{{ row }}</li>
+                    {% endfor -%}
+				</ul>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+	<br>
+	<div class="container border">
+		<div class="row">
+			<div class="col-md-12 border card-header"><span class="font-size-main">Dataset Composition</span></div>
+		</div>
+		{% if PopulateSummaryTables %}
+
+			{% include "comp_table_agg_tmpl.html" %}
+		
+		{% else %}
+		
+			{% include "comp_table_tmpl.html" %}
+
+		{% endif %}
+	</div>
+	<br>
+	<div class="container border">
+		<div class="row">
+			<div class="col-md-12 border card-header">
+				<span class="font-size-main">Ethical, Legal and Social Issues (ELSI)</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border">
+				<strong>{{ InclusionDesc }}:</strong> {{ Inclusion }}
+			</div>
+			<div class="col-md-6 border">
+				<strong>{{ DConfDesc }}:</strong> {{ DConf }}
+			</div>
+		</div>
+		{% if length(ExtUseConsids) > 0 %}
+		<div class="row">
+			<div class="col-md-12 border">
+				<strong>{{ ExtUseConsidsDesc }}</strong>: {{ ExtUseConsids }}
+			</div>
+		</div>
+		{% endif %}
+		{% if IsHuRes %}
+		<div class="row">
+			<div class="col-md-12 border card-header">
+				<span class="font-size-sub"><em>Human Subjects</em></span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border"><span class="font-size-med">REGULATORY</span></div>
+			<div class="col-md-6 border"><span class="font-size-med">OTHER CONSIDERATIONS</span></div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border">
+				<ul >
+					<li><strong>{{ RBApprovalDesc }}:</strong> {{ RBApproval }}</li>
+					{% if RBDidApprove %}
+						{% if length(Consent) > 0 %}
+						<li><strong>{{ ConsentDesc }}:</strong> {{ Consent }}</li>
+						{% endif %}
+						{% if WereConsented %}
+							{% if length(RevokeConsent) > 0 %}
+							<li><strong>{{ RevokeConsentDesc }}:</strong> {{ RevokeConsent }}</li>
+							{% endif %}
+							{% if length(UpdateCons) > 0 %}
+							<li><strong>{{ UpdateConsDesc }}:</strong> {{ UpdateCons }}</li>
+							{% endif %}
+						{% endif %}
+					{% endif %}
+				</ul>
+			</div>
+			<div class="col-md-6 border">
+				<ul>
+					<li><strong>{{ DCountriesDesc }}</strong>:
+						<ul>
+							{% for val in DCountries -%}
+								<li>{{ val }}</li>
+							{% endfor -%}
+						</ul>
+					</li>
+					{% if length(ELSIssues) > 0 %}
+					<li><strong>{{ ELSIssuesDesc }}:</strong> {{ ELSIssues }}</li>
+					{% endif %}
+					{% if length(PProxies) > 0 %}
+					<li><strong>{{ PProxiesDesc }}:</strong> {{ PProxies }}</li>
+					{% endif %}
+					{% if length(DProtImpact) > 0 %}
+						<li><strong>{{ DProtImpactDesc }}:</strong> {{ DProtImpact }}</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+		<div class="row">
+			{% if SensAttrsHasFigures %}
+				{% include "sens_attr_table_plus_figures.html" %}
+			{% else %}
+				{% include "sens_attr_table.html" %}
+			{% endif %}
+			<br>
+			{% if length(HAIntention) > 0 %}
+				<strong>{{ HAIntentionDesc }}:</strong> {{ HAIntention }}
+			{% endif %}
+		</div>
+		{% endif %}
+		{% if HasLicense %}
+		<div class="row">
+			<div class="col-md-12 border card-header">
+				<span class="font-size-sub"><em>LICENSING</em></span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 border">
+				<ul>
+					{% if length(IPTerms) > 0 %}
+					<li><strong>{{ IPTermsDesc }}:</strong>
+						<ul>
+							{% for row in IPTerms -%}
+								<li>{{ row }}</li>
+							{% endfor -%}
+						</ul>
+					</li>
+					{% endif %}
+					{% if length(TPIP) > 0 %}
+					<li><strong>{{ TPIPDesc }}:</strong>
+					<ul>
+						{% for row in TPIP -%}
+							<li>{{ row }}</li>
+						{% endfor -%}
+					</ul>
+					</li>
+					{% endif %}
+					{% if length(ExportControls) > 0 %}
+					<li><strong>{{ ExportControlsDesc }}:</strong>
+					<ul>
+						{% for row in ExportControls -%}
+							<li>{{ row }}</li>
+						{% endfor -%}
+					</ul>
+					</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+	<br>
+	<div class="container border">
+		<div class="row">
+			<div class="col-md-12 border card-header">
+				<span class="font-size-main">Provenance and Lineage</span>
+			</div>
+		</div>
+		{% if length(DCollSummary) > 0 or length(DConAttr) > 0 %}
+		<div class="row">
+			<div class="col-md-6 border">
+				<strong>{{ DCollSummaryDesc }}:</strong> {{ DCollSummary }}
+			</div>
+			<div class="col-md-6 border">
+				<strong>{{ DConAttrDesc }}:</strong>
+				<ul>
+					{% for row in DConAttr -%}
+						<li>{{ row }}</li>
+					{% endfor -%}
+				</ul>
+			</div>
+		</div>
+		{% endif %}
+		<div class="row">
+			<div class="col-md-6 border">
+				<strong>{{ DCurationDesc }}:</strong> {{ DCuration }}
+			</div>
+			<div class="col-md-6 border">
+				<strong>{{ DValidSummaryDesc }}:</strong>
+				<ul>
+					{% for row in DValidSummary -%}
+						<li>{{ row }}</li>
+					{% endfor -%}
+				</ul>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 border">
+				<strong>{{ DCollTimeDesc }}:</strong> {{  DCollTime }}
+			</div>
+		</div>
+		{% if length(PreprocWorkflow) > 0 %}
+		<div class="row">
+			<div class="col-md-12 border">
+				<strong>{{ PreprocWorkflowDesc }}:</strong>
+				<ul>
+					{% for row in PreprocWorkflow -%}
+						<li>{{ row }}</li>
+					{% endfor -%}
+				</ul>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+	<br>
+	{% if AnnotLabelAvail %}
+	<div class="container border">
+		<div class="row">
+			<div class="col-md-12 border card-header">
+				<span class="font-size-main">Labeling Provenance and Lineage</span>
+			</div>
+		</div>
+		{% if length(LabelValues) > 0 %}
+		<div class="row">
+			<div class="col-md-12 border">
+				<strong>{{ LabelValuesDesc }}:</strong>
+				<ul>
+					{% for value in LabelValues -%}
+						<li>{{ value }}</li>
+					{% endfor -%}
+				</ul>
+			</div>
+		</div>
+		{% endif %}
+		{% if length(LabelTask) > 0 or length(ActualLabels) > 0 %}
+		<div class="row">
+			<div class="col-md-6 border">
+				<strong>{{ LabelTaskDesc }}:</strong> {{ LabelTask }}
+			</div>
+			<div class="col-md-6 border">
+				<strong>{{ ActualLabelsDesc }}:</strong> {{ ActualLabels }}
+			</div>
+		</div>
+		{% endif %}
+		<div class="row">
+			<div class="col-md-12 border">
+				<span class="font-size-med">{{ upper(LabelDistrDesc) }}</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 border">
+				{{ LabelDistr }}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border">
+				<strong>{{ LabelGuidelinesDesc }}:</strong> {{ LabelGuidelines }}
+			</div>
+			<div class="col-md-6 border">
+				<strong>{{ LabelSoftwareDesc }}:</strong> {{ LabelSoftware }}
+			</div>
+		</div>
+		{% if length(LabelGoldS) > 0 or length(LabellerAggDis) > 0 %}
+		<div class="row">
+			<div class="col-md-6 border">
+				<strong>{{ LabelGoldSDesc }}:</strong>
+				<ul>
+					{% for value in LabelGoldS -%}
+						<li>{{ value }}</li>
+					{% endfor -%}
+				</ul>
+			</div>
+			<div class="col-md-6 border">
+				<strong>{{ LabellerAggDisDesc }}:</strong> {{ LabellerAggDis }}
+			</div>
+		</div>
+		{% endif %}
+	</div>
+	<br>
+	{% endif %}
+	{% if MaintainAvail %}
+	<div class="container border">
+		<div class="row">
+			<div class="col-md-12 border card-header">
+				<span class="font-size-main">Maintenance and Distribution</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border">
+				<span class="font-size-med">CURRENT INFORMATION</span>
+			</div>
+			<div class="col-md-6 border">
+				<span class="font-size-med">PREVIOUS/FUTURE UPDATES</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border">
+				<ul>
+					<li><strong>{{ LastUpdateDesc }}:</strong> {{ LastUpdate }}</li>
+					{% if length(VersionChange) > 0 %}
+					<li><strong>{{ VersionChangeDesc }}</strong>
+						{{ VersionChange }}
+					</li>
+					{% endif %}
+					{% if length(StaticDynamic) > 0 %}
+					<li><strong>{{ StaticDynamicDesc }}:</strong> {{ StaticDynamic }}</li>
+					{% endif %}
+					<li><strong>{{ WhoMaintainsDesc }}: </strong> {{ WhoMaintains }}</li>
+					{% if length(ContactInfo) > 0 %}
+					<li><strong>{{ ContactInfoDesc }}:</strong>
+						{{ ContactInfo }}
+					</li>
+					{% endif %}
+				</ul>
+			</div>
+			<div class="col-md-6 border">
+				<ul>
+					<li><strong>{{ NDatasetsDesc }}:</strong> {{ NDatasets }}</li>
+					{% if length(MoreExpected) > 0 %}
+					<li><strong>{{ MoreExpectedDesc }}:</strong> {{ MoreExpected }}</li>
+					{% endif %}
+					{% if NDatasets > 1 %}
+					<li><strong>{{ VersionInfoDesc }}:</strong>
+						{{ VersionInfo }}
+					</li>
+					{% endif %}
+					{% if length(FutureUpdType) > 0 %}
+					<li><strong>{{ FutureUpdTypeDesc }}:</strong>
+						{{ FutureUpdType }}
+					</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</div>
+	<br>
+	{% endif %}
+</body>
+</html>

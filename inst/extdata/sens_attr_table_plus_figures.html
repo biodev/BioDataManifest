@@ -1,0 +1,23 @@
+<table class="table">
+    <thead>
+        <tr class="table-active">
+            <th class="text-center" scope="col" colspan="3">Collected Sensitive Data Fields</th>
+        </tr>
+        <tr>
+            <th scope="col">Field Name</th>
+            <th scope="col">Definition</th>
+            <th scope="col">Distribution</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in CSensTable -%}
+            <tr>
+                <th scope="row">{{ row.header }}</th>
+                <td>{{ row.value.0 }}</td>
+                {% if row.value != "" %}
+                    <td><img class="img-fluid" vertical-align="bottom" src="{{ row.value.1 }}"/></td>
+                {% endif %}
+            </tr>
+        {% endfor -%}
+    </tbody>
+</table>

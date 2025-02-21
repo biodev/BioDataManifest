@@ -1,0 +1,252 @@
+<div class="row">
+    <div class="col-md-4 border"><span class="font-size-med">DATA SUBJECT(S)</span></div>
+    <div class="col-md-4 border"><span class="font-size-med">DATASET SNAPSHOT</span></div>
+    <div class="col-md-4 border"><span class="font-size-med">DETAILS</span></div>
+</div>
+<div class="row">
+    <div class="col-md-4 border">
+        <ul>
+            <li>{{ InstanceDef }}</li>
+            <li>{{ InstanceRels }}</li>
+        </ul>
+    </div>
+    <div class="col-md-4 border">
+        <br>
+        <table class="table">
+            <caption><strong>Above:</strong> {{ OpenInstTableCaption }}</caption>
+            <thead>
+                <th class="text-center" colspan="2">Open Access</th>
+            </thead>
+            <tbody>
+                {% for row in OpenInstanceTable -%}
+                <tr>
+                    <th scope="row">{{ row.header }}</th>
+                    <td>{{ row.value }}</td>
+                </tr>
+                {% endfor -%}
+            </tbody>
+        </table>
+        {% if length(ClosedInstanceTable) > 0 %}
+        <br>
+        <table class="table">
+            <caption><strong>Above:</strong> {{ ClosedInstTableCaption }}</caption>
+            <thead>
+                <th class="text-center" colspan="2">Controlled Access</th>
+            </thead>
+            <tbody>
+                {% for row in ClosedInstanceTable -%}
+                <tr>
+                    <th scope="row">{{ row.header }}</th>
+                    <td>{{ row.value }}</td>
+                </tr>
+                {% endfor -%}
+            </tbody>
+        </table>
+        {% endif %}
+
+        {% if length(InstTableAddtl) > 0 %}
+            <ul class="list-unstyled">
+                <li><strong>Additional Notes:</strong> {{ InstTableAddtl }}</li>
+            </ul>
+        {% endif %}
+    </div>
+    <div class="col-md-4 border">
+        <ul class="list-unstyled">
+            <li><strong>Modalities:</strong>
+                <ul>
+                    {% for val in Modalities -%}
+                        <li>{{ val }}</li>
+                    {% endfor -%}
+                </ul>
+            </li>
+            <li><strong>Missingness:</strong>
+                <ul>
+                    {% for val in MissingInfo -%}
+                        <li>{{ val }}</li>
+                    {% endfor -%}
+                </ul>
+            </li>
+            {% if length(SamplingInfo) > 0 %}
+            <li><strong>Sampling:</strong>
+                <ul>
+                    {% for val in SamplingInfo -%}
+                        <li>{{ val }}</li>
+                    {% endfor -%}
+                </ul>
+            </li>
+            {% endif %}
+            {% if length(DAnomalies) > 0 %}
+            <li><strong>Data anomalies/errors:</strong>
+                <ul>
+                    {% for val in DAnomalies -%}
+                        <li>{{ val }}</li>
+                    {% endfor -%}
+                </ul>
+            </li>
+            {% endif %}
+
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 border">
+        <span class="font-size-med">SUMMARY OF INSTANCES AND DATATYPES</span>
+    </div>
+    <div class="col-md-12 border text-center">
+        <a id="InstModCntrl" role="button" data-toggle="collapse" href="#InstMod" aria-expanded="true" aria-controls="InstMod" style="color:inherit">
+            <span class="font-size-med">Sample Types vs Modalities (Click to expand/hide)</span>
+        </a>
+    </div>
+    <div class="col-md-12 border table-responsive collapse show" id="InstMod">
+        <br>
+        <table class="table">
+            <caption><strong>Above:</strong> {{ InstModTableCaption }}</caption>
+            <thead>
+                <tr>
+                    <th class="text-center" colspan="{{ length(InstModTableHeader) }}">Open Access Modalities</th>
+                </tr>
+                <tr>
+                    {% for val in InstModTableHeader -%}
+                        <th scope="col">{{ val }}</th>
+                    {% endfor -%}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in InstModTable -%}
+                    <tr>
+                        <th scope="row">{{ row.header }}</th>
+                        {% for col in row.value -%}
+                        <td>{{ col }}</td>
+
+                        {% endfor -%}
+                    </tr>
+                {% endfor -%}
+            </tbody>
+        </table>
+        {% if length(ClosedInstModTable) > 0 %}
+        <table class="table">
+            <caption><strong>Above:</strong> {{ ClosedInstModTableCaption }}</caption>
+            <thead>
+                <tr>
+                    <th class="text-center" colspan="{{ length(ClosedInstModTableHeader) }}">Controlled Access Modalities</th>
+                </tr>
+                <tr>
+                    {% for val in ClosedInstModTableHeader -%}
+                        <th scope="col">{{ val }}</th>
+                    {% endfor -%}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in ClosedInstModTable -%}
+                    <tr>
+                        <th scope="row">{{ row.header }}</th>
+                        {% for col in row.value -%}
+                        <td>{{ col }}</td>
+
+                        {% endfor -%}
+                    </tr>
+                {% endfor -%}
+            </tbody>
+        </table>
+        {% if length(InstModTableAddtl) > 0 %}
+            <ul class="list-unstyled">
+                <li><strong>Additional Notes:</strong> {{ InstModTableAddtl }}</li>
+            </ul>
+        {% endif %}
+        {% endif %}
+        <br>
+    </div>
+    {% if length(InstDiagTable) > 0 %}
+    <div class="col-md-12 border text-center">
+        <a id="InstDiagCntrl" role="button" data-toggle="collapse" href="#InstDiag" aria-expanded="true" aria-controls="InstDiag" style="color:inherit">
+            <span class="font-size-med">Sample Types vs Diagnoses (Click to expand/hide)</span>
+        </a>
+    </div>
+    <div class="col-md-12 border table-responsive collapse show" id="InstDiag">
+        <br>
+        <table class="table">
+            <caption><strong>Above:</strong> {{ InstDiagTableCaption }}</caption>
+            <thead>
+                <tr>
+                    {% for val in InstDiagTableHeader -%}
+                        <th scope="col">{{ val }}</th>
+                    {% endfor -%}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in InstDiagTable -%}
+                    <tr>
+                        <th scope="row">{{ row.header }}</th>
+                        {% for col in row.value -%}
+                        <td>{{ col }}</td>
+
+                        {% endfor -%}
+                    </tr>
+                {% endfor -%}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    {% if length(ClinDiagTable) > 0 %}
+    <div class="col-md-12 border text-center">
+        <a id="ClinDiagCntrl" role="button" data-toggle="collapse" href="#ClinDiag" aria-expanded="true" aria-controls="ClinDiag" style="color:inherit">
+            <span class="font-size-med">Clinical Variables vs Diagnoses (Click to expand/hide)</span>
+        </a>
+    </div>
+    <div class="col-md-12 border table-responsive tbodyDiv collapse show" id="ClinDiag">
+        <br>
+        <table class="table">
+            <caption><strong>Above:</strong> {{ ClinDiagTableCaption }}</caption>
+            <thead class="sticky-top bg-white">
+                <tr>
+                    {% for val in ClinDiagTableHeader -%}
+                        <th scope="col">{{ val }}</th>
+                    {% endfor -%}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in ClinDiagTable -%}
+                    <tr>
+                        <th scope="row">{{ row.header }}</th>
+                        {% for col in row.value -%}
+                        <td>{{ col }}</td>
+
+                        {% endfor -%}
+                    </tr>
+                {% endfor -%}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    {% if length(SpecDiagTable) > 0 %}
+    <div class="col-md-12 border text-center">
+        <a id="SpecDiagCntrl" role="button" data-toggle="collapse" href="#SpecDiag" aria-expanded="true" aria-controls="SpecDiag" style="color:inherit">
+            <span class="font-size-med">Specific Diagnosis vs Diagnoses (Click to expand/hide)</span>
+        </a>
+    </div>
+    <div class="col-md-12 border table-responsive tbodyDiv collapse show" id="SpecDiag">
+        <br>
+        <table class="table">
+            <caption><strong>Above:</strong> {{ SpecDiagTableCaption }}</caption>
+            <thead class="sticky-top bg-white">
+                <tr>
+                    {% for val in SpecDiagTableHeader -%}
+                        <th scope="col">{{ val }}</th>
+                    {% endfor -%}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in SpecDiagTable -%}
+                    <tr>
+                        <th scope="row">{{ row.header }}</th>
+                        {% for col in row.value -%}
+                        <td>{{ col }}</td>
+
+                        {% endfor -%}
+                    </tr>
+                {% endfor -%}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>

@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col-md-6 border"><span class="font-size-med">EXPERIMENTAL UNITS</span></div>
+    <div class="col-md-6 border"><span class="font-size-med">DETAILS</span></div>
+</div>
+<div class="row">
+    <div class="col-md-6 border">
+        <ul>
+            <li><strong>{{ InstanceDefDesc }}: </strong>{{ InstanceDef }}</li>
+            {% if length(InstanceRels) > 0 %}
+            <li><strong>{{ InstanceRelsDesc }}: </strong>{{ InstanceRels }}</li>
+            {% endif %}
+            {% if length(SampleSize) > 0 %}
+            <li><strong>{{ SampleSizeDesc }}: </strong> {{ SampleSize }}</li>
+            {% endif %}
+            
+        </ul>
+    </div>
+    <div class="col-md-6 border">
+        <ul class="list-unstyled">
+            {% if length(Modalities) > 0 %}
+            <li><strong>{{ ModalitiesDesc }}:</strong>
+                <ul>
+                    {% for val in Modalities -%}
+                        <li>{{ val }}</li>
+                    {% endfor -%}
+                </ul>
+            </li>
+            {% endif %}
+            {% if length(MissingInfo) > 0 %}
+            <li><strong>{{ MissingInfoDesc }}:</strong>
+                <ul>
+                    {% for val in MissingInfo -%}
+                        <li>{{ val }}</li>
+                    {% endfor -%}
+                </ul>
+            </li>
+            {% endif %}
+            <li><strong>{{ SamplingInfoDesc }}:</strong>
+                <ul>
+                    {% for val in SamplingInfo -%}
+                        <li>{{ val }}</li>
+                    {% endfor -%}
+                </ul>
+            </li>
+            <li><strong>{{ DAnomaliesDesc }}:</strong>
+                <ul>
+                    {% for val in DAnomalies -%}
+                        <li>{{ val }}</li>
+                    {% endfor -%}
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>

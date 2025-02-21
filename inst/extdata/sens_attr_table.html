@@ -1,0 +1,19 @@
+<table class="table">
+    <thead>
+        <tr class="table-active">
+            <th class="text-center" scope="col" colspan="3">Collected Sensitive Data Fields</th>
+        </tr>
+        <tr>
+            <th scope="col">Field Name</th>
+            <th scope="col">Definition</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in CSensTable -%}
+            <tr>
+                <th scope="row">{{ row.header }}</th>
+                <td>{{ row.value }}</td>
+            </tr>
+        {% endfor -%}
+    </tbody>
+</table>

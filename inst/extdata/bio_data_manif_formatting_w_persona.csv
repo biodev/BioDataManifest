@@ -1,0 +1,67 @@
+Description,ShortName,Required Agg,ParseMarkdown,From Consensus,Variable Name,Variable Type,Section,Persona
+Dataset summary,,y,n,y,DSummary,string,General Information,Both
+Dataset name (abbreviation),,y,n,y,DName,string,General Information,Both
+Link(s) to data,,y,y,y,DataLinks,string,General Information,Both
+Link(s) to Dataset Documentation,,y,n,y,DDocLinks,list,General Information,Both
+Was dataset audited?  If so provide a link to dataset audit results,,o,n,y,DAudit,list,General Information,Both
+Author(s) of Biomedical Data Manifest,,y,n,n,DSAuthors,list,General Information,Both
+Dataset version,,y,n,y,DVersion,string,General Information,Both
+Dataset Unique ID,,o,n,y,DOI,string,General Information,Both
+Release Date,,y,n,y,RelDate,string,General Information,Both
+Dataset last updated,,o,n,y,LUDate,string,General Information,Both
+Dataset keywords,,y,n,y,Keywords,list,General Information,Both
+Extension mechanisms,,y,n,y,EMechanisms,list,General Information,Both
+Dataset publisher(s),,o,n,y,DPublisher,list,General Information,Both
+Dataset authors,,o,n,y,DContact,list,General Information,Both
+Summary of funding,,o,n,y,FundingSummaries,list,General Information,Both
+Content warning,,o,n,y,CWarning,string,General Information,Both
+How was the dataset originally envisioned to be used?,Dataset Original Use,o,n,y,DSuitable,list,Uses,Bench/Clinical
+Known concerns and limitations for future applications,Concerns and Limitations,y,n,y,DUnsuitable,list,Uses,Bench/Clinical
+List of known confounding factors,Confounding Factors,o,n,y,DImpacts,list,Uses,Both
+List of publications DOIs/URLs where dataset has been utilized including benchmarks,Dataset Known Publications and Benchmarks,o,n,y,AIUses,list,Uses,Both
+Link to current publication(s) to cite,Citation Guidelines,y,n,y,ReqCiteLinks,list,Uses,Both
+What is the experimental unit referred to in this dataset?,Definition of experimental unit,y,n,y,InstanceDef,string,Composition,Both
+Are there relationships between the experimental units?,Relationships between the experimental units,y,n,y,InstanceRels,string,Composition,DM/Comp
+What is the overall sample size?,Number of experimental units,y,n,y,SampleSize,string,Composition,DM/Comp
+Available datatypes/modalities for experimental units in this dataset,Modalities,y,n,y,Modalities,list,Composition,Bench/Clinical
+"Is there missing information in the dataset? If yes, how is it handled or represented?",Missingness,y,n,y,MissingInfo,list,Composition,DM/Comp
+Sampling Method(s),Sampling Method(s),o,n,y,SamplingInfo,list,Composition,Both
+Data anomalies/errors,Data anomalies/errors,o,n,y,DAnomalies,list,Composition,Both
+Confidentiality of data?,Confidentiality,o,n,y,DConf,string,ELSI,Both
+Availability and legal considerations for external resources utilized,Considerations for external resources utilized,o,n,y,ExtUseConsids,string,ELSI,Both
+Inclusion criteria,Inclusion,o,n,y,Inclusion,string,ELSI,Both
+Intentionality of sensitive human attribute collection,Intentionality of sensitive human attribute collection,o,n,y,HAIntention,string,ELSI,Bench/Clinical
+"Known ethical, legal and social implications introduced by preprocessing",Known ELS issues introduced by preprocessing,o,n,y,ELSIssues,string,ELSI,Both
+Known problematic proxies,Known problematic proxies,o,n,y,PProxies,string,ELSI,DM/Comp
+What countries were data collected from?,Sample were collected from patients in the following countries,o,n,y,DCountries,list,ELSI,Both
+Was a data protection impact analysis performed?,Was a data protection impact analysis performed?,o,n,y,DProtImpact,string,ELSI,DM/Comp
+REB/IRB approval for data collection?,REB/IRB approval for data collection?,o,n,y,RBApproval,string,ELSI,Both
+Were subjects consented?,Were subjects consented?,o,n,y,Consent,string,ELSI,DM/Comp
+Was consent revocable?,Was consent revocable?,o,n,y,RevokeConsent,string,ELSI,DM/Comp
+Considerations needed for future data updates,Considerations needed for future data updates,o,n,y,UpdateCons,string,ELSI,DM/Comp
+List any applicable license(s) governing use of the dataset,IP / Terms of Use,o,n,y,IPTerms,list,ELSI,Both
+List any applicable third party intellectual property considerations,Third party intellectual property considerations,o,n,y,TPIP,list,ELSI,DM/Comp
+List any export controls or other regulations impacting dataset access/download or storage,Export controls or other regulations impacting dataset access/download or storage,o,n,y,ExportControls,list,ELSI,DM/Comp
+Summarize any approaches used to validate all or part of the dataset,Dataset Validation,o,n,y,DValidSummary,list,Provenance and Lineage in datasets,Both
+Describe if and how computational or manual curation was performed to generate features/variables in the dataset,Dataset Curation,o,n,y,DCuration,string,Provenance and Lineage in datasets,Both
+Please provide either a link to the Manual of Procedures (MOP) for the study or a description of the data collection methodology including Data Sources and Collection Techniques,Description of the data collection methodology,o,n,y,DCollSummary,string,Provenance and Lineage in datasets,DM/Comp
+List any specific data collection devices used and provide any relevant contextual attributes,Specific data collection devices,o,n,y,DConAttr,list,Provenance and Lineage in datasets,DM/Comp
+Preprocessing steps/workflow,Preprocessing steps/workflow,o,n,y,PreprocWorkflow,list,Provenance and Lineage in datasets,DM/Comp
+Data collection timeframe,Data collection timeframe,o,n,y,DCollTime,string,Provenance and Lineage in datasets,Both
+What are the labels?,Label Names,o,n,y,LabelValues,list,Labeling Provenance and Lineage,Bench/Clinical
+Provide the original predictive task associated with the labels,Original predictive task associated with the labels,o,n,y,LabelTask,string,Labeling Provenance and Lineage,DM/Comp
+Class frequency of labels,Class frequency of labels,o,y,y,LabelDistr,string,Labeling Provenance and Lineage,Both
+List the targets or labels with corresponding gold-standard benchmarks or proxies used for evaluation and provide details,Labels with corresponding gold-standard benchmarks or proxies,o,n,y,LabelGoldS,list,Labeling Provenance and Lineage,DM/Comp
+Provide the corresponding guidelines for determining target or label values,Guidelines for determining label values,o,n,y,LabelGuidelines,string,Labeling Provenance and Lineage,Both
+"If targets or labels were rated by multiple individuals, summarize the rater agreement/disagreement",Rater agreement/disagreement,o,n,y,LabellerAggDis,string,Labeling Provenance and Lineage,DM/Comp
+Are the actual targets or labels provided in the dataset or only summarized?,Are the actual labels provided in the dataset or only summarized?,o,n,y,ActualLabels,string,Labeling Provenance and Lineage,DM/Comp
+If software was used as part of generating targets or labels please provide details and a link,Details of software used for generating labels,o,n,y,LabelSoftware,string,Labeling Provenance and Lineage,Both
+When was the data last updated?,Dataset last updated,o,n,y,LastUpdate,string,Maintenance and Distribution,Both
+What has changed on version update?,What has changed on version update?,o,y,y,VersionChange,string,Maintenance and Distribution,Bench/Clinical
+Static or dynamic versioning,Type of Versioning,o,n,y,StaticDynamic,string,Maintenance and Distribution,DM/Comp
+Number of dataset versions or releases currently available,Number of dataset versions or releases currently available,o,n,y,NDatasets,string,Maintenance and Distribution,Both
+Description of the multiple versions of the dataset (If multiple exist),Description of versions or releases,o,y,y,VersionInfo,string,Maintenance and Distribution,Both
+More versions expected?,More versions expected?,o,n,y,MoreExpected,string,Maintenance and Distribution,DM/Comp
+Who maintains the data?,Data Maintainer,o,n,y,WhoMaintains,string,Maintenance and Distribution,Both
+Contact Info,Maintainer Contact Info,o,y,y,ContactInfo,string,Maintenance and Distribution,DM/Comp
+Future update types,Future updates,o,y,y,FutureUpdType,string,Maintenance and Distribution,DM/Comp
