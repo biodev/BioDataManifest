@@ -15,7 +15,7 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' example.xl <- system.file("extdata", "Biomedical Data Manifest Template Example.xlsx", package = "BioDataManifest")
+#' example.xl <- system.file("extdata", "Biomedical_Data_Manifest_Template_Example.xlsx", package = "BioDataManifest")
 #' manifest_from_excel(example.xl)
 #' }
 manifest_from_excel <- function(excel.file, persona=c("DM/Comp", "Bench/Clinical"), output.file=NULL, format.file=NULL){
@@ -45,7 +45,7 @@ manifest_from_excel <- function(excel.file, persona=c("DM/Comp", "Bench/Clinical
     init.data <- init.data[,-c(1:6)]
     
     long.data <- tidyr::pivot_longer(init.data, 
-                                     cols=everything(),
+                                     cols=dplyr::everything(),
                                      values_transform=as.character,
                                      names_to="Description")
     

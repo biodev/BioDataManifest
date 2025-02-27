@@ -30,3 +30,9 @@ Given an Excel output from a survey tool such as Microsoft Forms populate
 a BioMedical Data Manifest HTML template for a given Persona.  Changing
 Personas removes questions/answers according to Bottomly et al In Prep.
 }
+\examples{
+\dontrun{
+example.xl <- system.file("extdata", "Biomedical_Data_Manifest_Template_Example.xlsx", package = "BioDataManifest")
+manifest_from_excel(example.xl)
+}
+}
