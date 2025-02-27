@@ -13,6 +13,11 @@
 #' bundled with the package.  
 #' @return "The path to the generated HTML file"
 #' @export
+#' @examples
+#' \dontrun{
+#' example.xl <- system.file("extdata", "Biomedical Data Manifest Template Example.xlsx", package = "BioDataManifest")
+#' manifest_from_excel(example.xl)
+#' }
 manifest_from_excel <- function(excel.file, persona=c("DM/Comp", "Bench/Clinical"), output.file=NULL, format.file=NULL){
     
     if (missing(format.file) || is.null(format.file) || all(is.na(output.file))){
@@ -148,7 +153,8 @@ manifest_from_excel <- function(excel.file, persona=c("DM/Comp", "Bench/Clinical
     
     sens.attr.tbl <- readr::read_delim(file=sens.attrs, 
                                       col_names=FALSE, progress=FALSE,
-                                      show_col_types = FALSE)
+                                      show_col_types = FALSE,
+                                      delim=":")
     
     names(sens.attr.tbl) <- c("header", "value")
     
