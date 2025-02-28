@@ -90,7 +90,8 @@ plot.fun <- function(tbl, plot.col, out.dir=NULL){
             theme()
     }
     
-    ggsave(p1, filename=paste0(out.dir, "/", make.names(plot.col), ".png"), width=1, height=1)
+    ggsave(p1, filename=paste0(out.dir, "/", make.names(plot.col), ".png"), width=1, height=1) |>
+        suppressWarnings()
     
     paste0(out.dir, "/", make.names(plot.col), ".png")
 }

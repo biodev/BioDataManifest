@@ -80,9 +80,17 @@ manifest_from_gdc <- function(project.id, output.file=NULL, format.file=NULL){
     
     message("Retrieving dbgap page...")
     
-    #setdiff(names(split.data), cur.format$`Variable Name`)
+    if ("dbgap_accession_number" %in% names(pquery) && all(is.na(pquery$dbgap_accession_number)) == F){
+        dbgap.id <- pquery$dbgap_accession_number
+    }else{
+        dbgap.id <- pquery$program$dbgap_accession_number
+    }
     
-    dbgap.page <- read_html(paste0("https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=", pquery$program$dbgap_accession_number))
+    if (is.null(dbgap.id) || all(is.na(dbgap.id))){
+        stop("ERROR: Cannot find dbGaP ID from GDC API")
+    }
+    
+    dbgap.page <- read_html(paste0("https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=", dbgap.id))
     
     #if substudies are present, try to choose the relevant one
     #note this example works for TARGET, probably not in other contexts
@@ -154,6 +162,7 @@ manifest_from_gdc <- function(project.id, output.file=NULL, format.file=NULL){
         html_elements(xpath="//dt[text() = 'Study Attribution']/following-sibling::dd/ul/li") |>
         html_text2() |>
         tibble::as_tibble() |>
+        dplyr::filter(grepl("Principal Investigator", value)) |>
         tidyr::separate_wider_delim(cols=value, delim="\n", names=c("header", "value")) |>
         _$value
     
@@ -161,15 +170,12 @@ manifest_from_gdc <- function(project.id, output.file=NULL, format.file=NULL){
     
     #check for a redirect
     
-    is.redirect <- dbgap.restricts |>
-        html_elements("div#restricted-access-body font") |>
-        html_text2()
+    redir.id <- dbgap.restricts |>
+        html_elements("div#restricted-access-body a") |>
+        html_text2() |>
+        grep("phs", x=_, value=TRUE)
     
-    if (length(is.redirect) > 0){
-        redir.id <- dbgap.restricts |>
-            html_elements("div#restricted-access-body a") |>
-            html_text2() |>
-            grep("phs", x=_, value=TRUE)
+    if (length(redir.id) > 0){
         
         dbgap.restricts <- read_html(paste0("https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/GetRestrictedAccess.cgi?study_id=",  redir.id ))
     }

@@ -1,6 +1,6 @@
 Package: BioDataManifest
 Title: Tools for Rendering Biomedical Data Manifests
-Version: 0.99.2
+Version: 0.99.3
 Authors@R: c(person("Daniel", "Bottomly", role=c("cre", "aut"), email="bottomly@ohsu.edu"),
 	person("Shannon", "McWeeney", role="aut"))
 Description: This package has two main functions.  It can render a Biomedical Data Manifest HTML
