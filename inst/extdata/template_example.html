@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>CITRP BioMedical Data Manifest</title>
+
+	<!-- Bootstrap -->
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+	
+	<script type="text/javascript">
+        const persona_type = "Data Managers/Computationalists";
+		const collapse_div_names = ["InstDiag", "ClinDiag", "InstDiag", "SpecDiag"];
+
+        $(document).ready(function(){
+            
+			if (persona_type == "computationalist"){
+
+				for(let div_name in collapse_div_names){
+					$("#" + collapse_div_names[div_name]).removeClass("show");
+					$("#" + collapse_div_names[div_name] + "Cntrl").attr("aria-expanded", "false")
+				}
+			}
+		
+        });
+    </script>
+	
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+		integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+	<style type="text/css">
+		.font-size-main {
+			font-size: 1.3rem;
+		}
+
+		.font-size-sub {
+			font-size: 1.2rem;
+		}
+
+		.font-size-med {
+			font-size: 1.1rem;
+		}
+
+		/* from https://stackoverflow.com/questions/68467572/bootstrap-responsive-table-with-scrollable-tbody */
+		.tbodyDiv{
+			max-height: clamp(5em,50vh,1000px);*/
+			overflow: auto;
+		}
+
+	</style>
+</head>
+
+<body>
+	<div class="jumbotron jumbotron-fluid text-center">
+		<h1 class="display-4">BioMedical Data Manifest</h1>
+		<h2>Data Managers/Computationalists</h2>
+	</div>
+	<br>
+	<div class="container border">
+		<div class="row">
+			<div class="col-md-6 align-self-center">
+				<h4>Cancer Imaging Dataset for Treatment Response Prediction (CITRP)</h4>
+			</div>
+			<div class="col-md-6 border">
+				This dataset contains a collection of cancer imaging data aimed at predicting the clinical response versus non-response to treatment in patients with various types of cancer. The images were obtained from multiple sources, including CT scans, MRIs, and PET scans, with labeled annotations on treatment response. The dataset provides the opportunity for researchers to develop machine learning models to predict treatment efficacy, supporting personalized medicine and better clinical decision-making.<br>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 border card-header"><span class="font-size-sub"><em>General Information</em></span></div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-6 border"><span class="font-size-med">LINKS</span></div>
+			<div class="col-md-6 border"><span class="font-size-med">DATA MANIFEST AUTHORS</span></div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border">
+				<ul class="list-unstyled">
+					<li><strong>Data Links:</strong>
+						<ul>
+<li>Primary Data Portal Link</li>
+<li>Google Cloud Storage (GCS) Bucket</li>
+</ul>
+
+					</li>
+					<li><strong>Documentation (If different):</strong> 
+						<ul>
+							<li>Dataset Overview & Guidelines Link</li>
+                    		</ul>
+					</li>
+					
+				</ul>
+			</div>
+			<div class="col-md-6 border">
+				<ul>
+					<li>ChatGPT</li>
+                    </ul>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border"><span class="font-size-med">VERSION INFORMATION</span></div>
+			<div class="col-md-6 border"><span class="font-size-med">KEYWORDS</span></div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border">
+				<ul>
+					<li>Current Version: v1.2</li>
+					
+					<li>DOI: CITRP-2025-V1</li>
+					
+					<li>Release Date: 2025-02-01</li>
+					
+					<li>Last Updated: 2025-02-18</li>
+					
+				</ul>
+			</div>
+			<div class="col-md-6 border">
+				<ul>
+					<li>Cancer Imaging</li>
+                    <li>Treatment Response Prediction</li>
+                    <li>Machine Learning</li>
+                    <li>Oncology</li>
+                    <li>MRI, CT, PET Scans</li>
+                    <li>Medical Imaging</li>
+                    <li>Personalized Medicine</li>
+                    <li>Response vs Non-response</li>
+                    </ul>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 border"><span class="font-size-med">EXTENSION MECHANISMS</span></div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 border">
+				<ul class="list-unstyled">
+					<li>Contact dataset authors for ways to contribute</li>
+                    </ul>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4 border"><span class="font-size-med">OWNER/PUBLISHER</span></div>
+			<div class="col-md-8 border"><span class="font-size-med">CONTACT DETAILS</span></div>
+		</div>
+		<div class="row">
+			<div class="col-md-4 border">
+				<ul class="list-unstyled">
+					<li>Medical Data Collaborative (MDC)</li>
+                    <li>Cancer Research Institute (CRI)</li>
+                    </ul>
+			</div>
+			<div class="col-md-8 border">
+				<ul class="list-unstyled" <li><strong>Dataset Contacts:</strong>
+					<ul>
+						<li>Dr. Jane Doe (Lead Author, CRI)</li>
+                    	<li>Dr. John Smith (Co-author, University of Medicine)</li>
+                    	<li>Dr. Emily Johnson (Co-author, Oncology Department)</li>
+                    	</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-8 border"><span class="font-size-med">FUNDING OR GRANT SUMMARY(IES)</span></div>
+		</div>
+		<div class="row">
+			<div class="col-md-8 border">
+				<ul class="list-unstyled">
+					National Cancer Institute (NCI) Grant #12345: "Predictive Models for Cancer Treatment Response"
+                    NIH R01 Grant #67890: "Data Sharing and Imaging for Cancer Therapy Optimization"
+                    The project also received support from a collaboration with the Cancer Research Institute's Imaging Lab.
+                    </ul>
+			</div>
+		</div>
+		
+	</div>
+	<br>
+	<div class="container border">
+		<div class="row">
+			<div class="col-md-12 border card-header"><span class="font-size-main"> Uses of Data</span>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-6 border"><span class="font-size-med">CONFOUNDING FACTORS</span></div>
+			<div class="col-md-6 border"><span class="font-size-med">DATASET KNOWN PUBLICATIONS AND BENCHMARKS</span></div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border">
+				<ul>
+					<li>Batch Effects: Variability between different imaging scanners or centers may introduce inconsistencies in image quality and analysis, impacting model generalizability.</li>
+                    <li>Patient Demographics: Factors like age, gender, and ethnicity may affect tumor characteristics, treatment response, and imaging results.</li>
+                    <li>Imaging Protocol Variability: Differences in imaging protocols (e.g., MRI vs. CT scans) can introduce noise into the dataset, especially when datasets come from multiple hospitals or institutions.</li>
+                    <li>Tumor Heterogeneity: Variability within tumor types, such as heterogeneity in tissue composition or response to treatment, may lead to inconsistencies.</li>
+                    <li>Treatment Variability: Different types of cancer treatments (chemotherapy, immunotherapy, radiation, etc.) may confound response predictions due to variations in the treatment regimens.</li>
+                    </ul>
+			</div>
+			<div class="col-md-6 border">
+				<ul>
+					<li>DOI 10.1016/j.jclinonc.2020.11.010: "Assessing Predictive Models for Tumor Response in Cancer Imaging using Machine Learning" – This study benchmarks the dataset to evaluate predictive models for assessing cancer treatment response.</li>
+                    <li>DOI 10.1136/bmj.2020.036567: "Machine Learning for Tumor Progression Prediction: A Comparative Study" – Utilizes the dataset to compare several machine learning algorithms in predicting tumor progression.</li>
+                    <li>URL: https://pubmed.ncbi.nlm.nih.gov/33390076/: "A Comprehensive Review of Image-Based Biomarkers for Tumor Response Prediction" – Discusses the dataset and its applications in a review of imaging biomarkers.</li>
+                    </ul>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-12 border"><span class="font-size-med">CITATION GUIDELINES</span></div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 border">
+		
+				<strong>When using this dataset please cite:</strong>
+				<ul>
+					<li>DOI 10.1016/j.jclinonc.2021.01.018: "Predicting Clinical Outcomes in Cancer Treatment Using Imaging Data" – This paper presents a methodology for predicting treatment response based on the imaging dataset.</li>
+                    <li>DOI 10.1038/s41592-021-01014-9: "Cancer Imaging: A Multi-Modal Approach to Predict Tumor Response" – Provides insights on how multi-modal imaging data from the dataset is used in response prediction models.</li>
+                    </ul>
+			</div>
+		</div>
+		
+	</div>
+	<br>
+	<div class="container border">
+		<div class="row">
+			<div class="col-md-12 border card-header"><span class="font-size-main">Dataset Composition</span></div>
+		</div>
+		
+		
+			<div class="row">
+    <div class="col-md-6 border"><span class="font-size-med">EXPERIMENTAL UNITS</span></div>
+    <div class="col-md-6 border"><span class="font-size-med">DETAILS</span></div>
+</div>
+<div class="row">
+    <div class="col-md-6 border">
+        <ul>
+            <li><strong>Definition of experimental unit: </strong>The experimental unit is defined as an individual patient. Each patient is represented by a set of medical images taken at different time points during treatment, and these images are used to predict the patient's response to cancer treatment (responder or non-responder).</li>
+            
+            <li><strong>Relationships between the experimental units: </strong>Yes, some experimental units (patients) have longitudinal data, meaning that multiple imaging sessions are captured over time for the same patient. This introduces temporal dependency where each patient’s data is related to their previous and future scans, affecting response prediction.</li>
+            
+            
+            <li><strong>Number of experimental units: </strong> The overall sample size is 250 individual patients, each with a series of imaging scans (MRI, CT, PET) collected across multiple time points during treatment.</li>
+            
+            
+        </ul>
+    </div>
+    <div class="col-md-6 border">
+        <ul class="list-unstyled">
+            
+            
+            <li><strong>Missingness:</strong>
+                <ul>
+                    <li>Yes, some imaging data are missing due to technical issues, patient non-compliance, or loss to follow-up. Missing data is handled using imputation techniques, where missing values are replaced with predictions based on other data points, or cases with extensive missing data are excluded from specific analyses.</li>
+                    </ul>
+            </li>
+            
+            <li><strong>Sampling Method(s):</strong>
+                <ul>
+                    <li>Convenience;Stratified</li>
+                    </ul>
+            </li>
+            <li><strong>Data anomalies/errors:</strong>
+                <ul>
+                    <li>Artifacts in Imaging: Some images contain artifacts due to motion or scanner issues, which are flagged and removed before analysis. Mislabeling of Clinical Data: There were some discrepancies in the labeling of response outcomes, which were manually reviewed and corrected by clinical experts.</li>
+                    </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+		
+	</div>
+	<br>
+	<div class="container border">
+		<div class="row">
+			<div class="col-md-12 border card-header">
+				<span class="font-size-main">Ethical, Legal and Social Issues (ELSI)</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border">
+				<strong>Inclusion:</strong> Age: Patients aged 18 and older at the time of treatment. Diagnosis: Histologically confirmed cancer diagnosis. Treatment: Patients receiving one of the pre-defined treatments (chemotherapy, immunotherapy, radiation). Imaging: At least two sets of medical imaging available (baseline and follow-up). Consent: Signed informed consent for data use in research.
+			</div>
+			<div class="col-md-6 border">
+				<strong>Confidentiality:</strong> Yes, the data includes sensitive patient information protected under doctor-patient confidentiality. Any personally identifiable information (PII) has been anonymized or pseudonymized to meet the standards of HIPAA (Health Insurance Portability and Accountability Act) in the U.S. However, specific imaging data could still pose risks of re-identification if not handled appropriately.
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-12 border">
+				<strong>Considerations for external resources utilized</strong>: Public Datasets: Some imaging data are drawn from public cancer imaging repositories (e.g., The Cancer Imaging Archive). The use of these datasets must comply with the respective data-sharing agreements and terms of use. Proprietary Software: The dataset was pre-processed using proprietary software tools, which may require licensing for future use.
+			</div>
+		</div>
+		
+		
+		<div class="row">
+			<div class="col-md-12 border card-header">
+				<span class="font-size-sub"><em>Human Subjects</em></span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border"><span class="font-size-med">REGULATORY</span></div>
+			<div class="col-md-6 border"><span class="font-size-med">OTHER CONSIDERATIONS</span></div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border">
+				<ul >
+					<li><strong>REB/IRB approval for data collection?:</strong> Yes</li>
+					
+						
+						<li><strong>Were subjects consented?:</strong> Yes</li>
+						
+						
+							
+							<li><strong>Was consent revocable?:</strong> No</li>
+							
+							
+							<li><strong>Considerations needed for future data updates:</strong> None</li>
+							
+						
+					
+				</ul>
+			</div>
+			<div class="col-md-6 border">
+				<ul>
+					<li><strong>Sample were collected from patients in the following countries</strong>:
+						<ul>
+							<li>The data was collected from the United States, Canada, and Germany, with a focus on urban hospitals and specialized cancer treatment centers. Data collection from these regions represents a mix of healthcare systems and patient demographics.</li>
+							</ul>
+					</li>
+					
+					<li><strong>Known ELS issues introduced by preprocessing:</strong> Bias in Sampling: Preprocessing steps may unintentionally introduce sampling bias if certain groups (e.g., non-white or underrepresented ethnicities) are underrepresented due to exclusion criteria or underreporting in medical records. Data Anonymization: While efforts have been made to anonymize all personal data, there is a possibility that some datasets may inadvertently retain re-identifiable information, particularly with the use of imaging data.</li>
+					
+					
+					<li><strong>Known problematic proxies:</strong> Socioeconomic Status: Proxy variables related to socioeconomic status (e.g., insurance type, income levels) may correlate with race/ethnicity, potentially leading to biased outcomes in predictive models.
+Geographical Location: Patients from urban areas may be overrepresented, while rural patients might be underrepresented, influencing the generalizability of the dataset to broader populations.</li>
+					
+					
+						<li><strong>Was a data protection impact analysis performed?:</strong> No</li>
+					
+				</ul>
+			</div>
+		</div>
+		<div class="row">
+			
+				<table class="table">
+    <thead>
+        <tr class="table-active">
+            <th class="text-center" scope="col" colspan="3">Collected Sensitive Data Fields</th>
+        </tr>
+        <tr>
+            <th scope="col">Field Name</th>
+            <th scope="col">Definition</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+                <th scope="row">Race</th>
+                <td> Self-reported race/ethnicity information, which may be relevant for studying disparities in treatment responses.</td>
+            </tr>
+        <tr>
+                <th scope="row">Gender</th>
+                <td> Gender (male/female) data, which could impact response predictions for certain cancer types due to biological differences.</td>
+            </tr>
+        <tr>
+                <th scope="row">Age</th>
+                <td> Patients' age is available, and the dataset includes both pediatric and adult populations, making age a relevant factor in treatment response.</td>
+            </tr>
+        <tr>
+                <th scope="row">Medical History</th>
+                <td> Data on prior medical conditions and treatments that could be considered personally identifiable information (PII) under HIPAA regulations.</td>
+            </tr>
+        </tbody>
+</table>
+			
+			<br>
+			
+		</div>
+		
+		
+		<div class="row">
+			<div class="col-md-12 border card-header">
+				<span class="font-size-sub"><em>LICENSING</em></span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 border">
+				<ul>
+					
+					<li><strong>IP / Terms of Use:</strong>
+						<ul>
+							<li>The intellectual property (IP) for the dataset resides with the originating institutions, but the dataset is made available under a Creative Commons Attribution 4.0 International License (CC BY 4.0). Researchers must provide proper attribution and ensure that the dataset is not used for commercial purposes without additional permissions.</li>
+							</ul>
+					</li>
+					
+					
+					<li><strong>Third party intellectual property considerations:</strong>
+					<ul>
+						<li>Some imaging data incorporated in the dataset were obtained from third-party repositories, such as The Cancer Imaging Archive. These data are subject to the terms of use provided by the respective repository, which typically allow for non-commercial research use only.</li>
+						</ul>
+					</li>
+					
+					
+					<li><strong>Export controls or other regulations impacting dataset access/download or storage:</strong>
+					<ul>
+						<li>Yes, some of the dataset's components, particularly those involving genomic data, are subject to export control regulations under U.S. law. The use and sharing of this data outside the United States must comply with U.S. export laws, and specific restrictions may apply to international collaborations.</li>
+						</ul>
+					</li>
+					
+				</ul>
+			</div>
+		</div>
+		
+	</div>
+	<br>
+	<div class="container border">
+		<div class="row">
+			<div class="col-md-12 border card-header">
+				<span class="font-size-main">Provenance and Lineage</span>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-6 border">
+				<strong>Description of the data collection methodology:</strong> Data Sources: Data were obtained from multiple hospitals and cancer centers specializing in oncology treatments. This includes electronic health records (EHR), medical imaging archives, and genomic sequencing data.
+Collection Techniques: Imaging data were collected during routine clinical visits at pre-specified timepoints (baseline, post-treatment, follow-up). Clinical data were sourced from EHRs, and genomic data were collected via whole-exome sequencing during routine cancer treatment workflows.
+Link to MOP: [Insert URL or description of the manual] (e.g., https://www.dataset-mop.com)
+			</div>
+			<div class="col-md-6 border">
+				<strong>Specific data collection devices:</strong>
+				<ul>
+					<li>CT Scanner: Siemens SOMATOM Force (Model No. 12345, Software Version 1.0). Acquisition parameters: slice thickness of 1.0 mm, 120 kVp, 200 mA.</li>
+					<li>MRI Scanner: GE Signa Premier 3T (Model No. 67890, Software Version 2.1). Imaging protocols: T1-weighted, T2-weighted, contrast-enhanced imaging sequences.</li>
+					<li>Genomic Sequencing: Illumina NovaSeq 6000, with a minimum read depth of 30x per sample.</li>
+					</ul>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-6 border">
+				<strong>Dataset Curation:</strong> Manual Curation: Imaging features (e.g., tumor size, shape, and texture) were manually extracted by radiologists from CT and MRI images. These features were then used as input variables for predictive models.
+Clinical Data Curation: Patient clinical records were manually reviewed by a team of clinicians to ensure accuracy in variables such as tumor stage, treatment regimens, and response classification.
+Automated Feature Extraction: For genomic data, mutations were identified using bioinformatics pipelines. These features were automatically extracted and curated based on predefined algorithms for mutation discovery and variant annotation.
+
+			</div>
+			<div class="col-md-6 border">
+				<strong>Dataset Validation:</strong>
+				<ul>
+					<li>Targeted Resequencing: Whole-exome sequencing was performed for a subset of patients to validate key mutations identified in initial genome-wide association studies (GWAS). This aimed to confirm the presence of mutations that were initially discovered through broader genomic data.</li>
+					<li>Expert Pathologist Review: Imaging data were validated by a team of radiologists and oncologists who reviewed the accuracy of tumor segmentation and treatment response classifications.</li>
+					<li>Cross-validation with External Datasets: The dataset was cross-validated against external benchmarks from other publicly available cancer imaging datasets, including those from The Cancer Imaging Archive (TCIA), to ensure consistency and reliability.</li>
+					</ul>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 border">
+				<strong>Data collection timeframe:</strong> January 1, 2018 to December 31, 2023
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-12 border">
+				<strong>Preprocessing steps/workflow:</strong>
+				<ul>
+					<li>Preprocessing for Imaging: All medical imaging data were standardized to a common resolution and normalized for intensity. Tumor regions of interest (ROIs) were manually outlined by radiologists and used for feature extraction.</li>
+					<li>Preprocessing for Genomic Data: Raw sequencing reads were aligned to the reference genome using BWA (Burrows-Wheeler Aligner), and variant calling was performed using GATK (Genome Analysis Toolkit).</li>
+					<li>Preprocessing for Clinical Data: Clinical data were cleaned and anonymized. Missing data were handled using multiple imputation methods where applicable.</li>
+					</ul>
+			</div>
+		</div>
+		
+	</div>
+	<br>
+	
+	<div class="container border">
+		<div class="row">
+			<div class="col-md-12 border card-header">
+				<span class="font-size-main">Labeling Provenance and Lineage</span>
+			</div>
+		</div>
+		
+		
+		<div class="row">
+			<div class="col-md-6 border">
+				<strong>Original predictive task associated with the labels:</strong> The original predictive task is to classify cancer patients into two categories based on their treatment response.  This classification task serves as the basis for building predictive models to forecast response based on imaging and clinical data.
+			</div>
+			<div class="col-md-6 border">
+				<strong>Are the actual labels provided in the dataset or only summarized?:</strong> The actual treatment response labels (responder/non-responder) are included in the dataset for each patient, along with the corresponding clinical and imaging data that were used to determine the label.
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-12 border">
+				<span class="font-size-med">CLASS FREQUENCY OF LABELS</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 border">
+				<p>Responder: 40% (N=100)
+Non-Responder: 60% (N=150)</p>
+
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border">
+				<strong>Guidelines for determining label values:</strong> Responder/Non-Responder Classification: The determination is based on tumor size changes measured by MRI or CT scan according to RECIST 1.1 criteria.
+Responder: ≥30% decrease in the sum of the longest diameters of target lesions.
+Non-Responder: <30% decrease, stable disease, or progression.
+			</div>
+			<div class="col-md-6 border">
+				<strong>Details of software used for generating labels:</strong> The OncoAI Platform was used for initial tumor segmentation and response prediction based on imaging data. This software uses deep learning algorithms to detect and quantify tumor regions, and the output is integrated with clinical data to classify treatment response.
+Link: OncoAI Platform
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-6 border">
+				<strong>Labels with corresponding gold-standard benchmarks or proxies:</strong>
+				<ul>
+					<li>Responder vs Non-Responder were evaluated using Response Evaluation Criteria in Solid Tumors (RECIST 1.1) as well as expert pathologists who reviewed histopathology slides to confirm tumor response at the cellular level.</li>
+					</ul>
+			</div>
+			<div class="col-md-6 border">
+				<strong>Rater agreement/disagreement:</strong> Rater Agreement: The concordance between radiologists and pathologists in labeling treatment response was evaluated using Cohen’s kappa coefficient, which showed a 0.85 agreement, indicating strong consistency across raters.
+Disagreements: In cases of rater disagreement, the labels were reviewed by a senior clinician for final determination.
+			</div>
+		</div>
+		
+	</div>
+	<br>
+	
+	
+	<div class="container border">
+		<div class="row">
+			<div class="col-md-12 border card-header">
+				<span class="font-size-main">Maintenance and Distribution</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border">
+				<span class="font-size-med">CURRENT INFORMATION</span>
+			</div>
+			<div class="col-md-6 border">
+				<span class="font-size-med">PREVIOUS/FUTURE UPDATES</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 border">
+				<ul>
+					<li><strong>Dataset last updated:</strong> The dataset was last updated on January 15, 2025, following the addition of new patient imaging data from a recent cohort of clinical trials.</li>
+					
+					
+					<li><strong>Type of Versioning:</strong> The dataset follows dynamic versioning, meaning updates are regularly made to reflect new data entries, changes in classification, or corrections to previously recorded data. The dataset is continuously maintained to ensure it includes the latest available data.</li>
+					
+					<li><strong>Data Maintainer: </strong> The dataset is maintained by the Biomedical Research Data Management Team at XYZ Medical Research Institute, under the direction of Dr. Jane Smith, Principal Investigator, and the Research Informatics Department.</li>
+					
+					<li><strong>Maintainer Contact Info:</strong>
+						<ul>
+<li><strong>Primary Contact</strong>: Dr. Jane Smith, Principal Investigator</li>
+<li><strong>Email</strong>: <a href="mailto:jsmith@xyzresearch.org">jsmith@xyzresearch.org</a></li>
+<li><strong>Phone</strong>: +1 (555) 123-4567</li>
+<li><strong>Support Team Email</strong>: <a href="mailto:data-support@xyzresearch.org">data-support@xyzresearch.org</a></li>
+</ul>
+
+					</li>
+					
+				</ul>
+			</div>
+			<div class="col-md-6 border">
+				<ul>
+					<li><strong>Number of dataset versions or releases currently available:</strong> 3</li>
+					
+					<li><strong>More versions expected?:</strong> Yes</li>
+					
+					
+					<li><strong>Description of versions or releases:</strong>
+						<ul>
+<li><strong>Version 1.0 (March 2023):</strong> The initial release, which included basic demographic and imaging data for 500 patients treated for a specific condition. Only clinical and radiological features were included at this stage.</li>
+<li><strong>Version 2.0 (July 2024):</strong> This version expanded the dataset to include clinical follow-up data, patient treatment regimens, and post-treatment imaging, along with a refined classification of patient responses to treatment (e.g., responder/non-responder). New imaging modalities, such as CT scans, were added.</li>
+<li><strong>Version 3.0 (January 2025):</strong> The most recent update, adding data from an additional 300 patients and including new genomic data, such as biomarker levels and sequencing results. Labeling has been updated for several cases based on feedback from clinical experts. Additional machine learning-derived features have also been incorporated.</li>
+</ul>
+
+					</li>
+					
+					
+					<li><strong>Future updates:</strong>
+						<ul>
+<li><strong>Genomic Data</strong>: Genomic data, such as biomarkers and sequencing results, are not expected to change frequently. Once new markers are identified, they will be added in updates, but this data will largely remain stable over time.</li>
+<li><strong>Clinical Data</strong>: Clinical information (e.g., patient follow-up, treatment protocols, imaging results) will be updated periodically, particularly as new cohorts are enrolled in studies or as follow-up data becomes available from ongoing clinical trials.</li>
+<li><strong>Imaging Data</strong>: As new imaging modalities and follow-up imaging scans are collected, this information will be updated regularly. We also plan to include more advanced imaging analysis techniques, including AI-driven insights, in future updates.</li>
+</ul>
+
+					</li>
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+	<br>
+	
+</body>
+</html>
