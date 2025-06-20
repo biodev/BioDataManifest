@@ -1,0 +1,397 @@
+---
+title: "R Notebook reproduce figures from BioDataManifest manuscript"
+output: html_notebook
+---
+
+This notebook accompanies Bottomly et al. "Biomedical Data Manifest: A lightweight data documentation mapping to increase transparency for AI/ML".  Submitted to Scientific Data.
+
+Assumes the supplemental table Excel file (`SuppTables-06-20-2025.xlsx`) is in the current directory.
+
+```{r message=FALSE}
+
+library(tidyverse)
+library(ggplot2)
+library(patchwork)
+library(readxl)
+library(ggrepel)
+
+survey_res <- read_excel("SuppTables-06-20-2025.xlsx", sheet="Table S5")
+
+```
+
+# Initially parse survey
+
+```{r}
+
+cur_question <- names(survey_res)[1]
+
+question_groups <- tribble(
+    ~question, ~column_idx, ~statement,
+    cur_question, 1, as.character(unname(unlist(survey_res[1,1])))
+)
+
+question_order <- c(cur_question)
+
+for(i in 2:ncol(survey_res)){
+    
+    if (grepl("^\\.\\.\\.\\d+$", names(survey_res)[i]) == F){
+        cur_question <- names(survey_res)[i]
+        question_order <- c(question_order, cur_question)
+    }
+    
+    question_groups <- bind_rows(
+        question_groups,
+        tribble(
+        ~question, ~column_idx, ~statement,
+        cur_question, i, as.character(unname(unlist(survey_res[1,i])))
+    ))
+}
+
+question_groups <- inner_join(
+    question_groups,
+    as_tibble(question_order) %>%
+        rename(question = "value") %>%
+        mutate(question_idx=seq_along(question)-1),
+    by="question"
+)
+
+question_groups <- filter(question_groups, column_idx > 2)
+
+question_groups <- group_by(question_groups, question)
+
+reformatted_questions <- lapply(group_split(question_groups), function(group_tbl){
+    
+    tmp_wide_question <- select(survey_res, all_of(c(1, 2, group_tbl$column_idx)))
+    tmp_wide_question[1,1] <- "respondent"
+    tmp_wide_question[1,2] <- "primary_role"
+    names(tmp_wide_question) <- tmp_wide_question[1,] %>% 
+        unlist %>% 
+        unname
+    
+    if (ncol(tmp_wide_question) >= 4 && all(names(tmp_wide_question)[seq(4, ncol(tmp_wide_question), by=2)] == "Other (please specify)")){
+        names(tmp_wide_question)[seq(4, ncol(tmp_wide_question), by=2)] <- paste(names(tmp_wide_question)[seq(3, ncol(tmp_wide_question), by=2)], "comment", sep="_")
+        names(tmp_wide_question)[seq(3, ncol(tmp_wide_question), by=2)] <- paste(names(tmp_wide_question)[seq(3, ncol(tmp_wide_question), by=2)], "response", sep="_")
+    }else{
+        tmp_wide_question[[paste(names(tmp_wide_question)[3], "comment", sep="_")]] <- NA_character_
+        names(tmp_wide_question)[3] <- paste(names(tmp_wide_question)[3], "response", sep="_")
+    }
+    
+    pivot_longer(data=tmp_wide_question[-1,], 
+                 cols=-c(1:2),
+                 names_sep= "_",
+                 names_to=c("statement", "type"), 
+                 values_to="response") %>%
+        mutate(question=group_tbl$question[1],
+               question_idx=group_tbl$question_idx[1]) %>%
+        pivot_wider(names_from=type, values_from=response) %>%
+        left_join(select(group_tbl, statement, column_idx), by="statement")
+    
+}) %>%
+    bind_rows
+
+reformatted_questions <- mutate(reformatted_questions, 
+                                role_category=ifelse(primary_role %in% c("Data Manager", "Computationalist"),
+                                                     "DM/Comp", "Bench/Clinical"))
+
+#address the issue of choosing Other for questions 2 and 3
+##change statement to Response and add 'Other:' to the response value
+
+reformatted_questions <- reformatted_questions %>% 
+    mutate(response = ifelse(statement == "Response" & response == "Other (please specify)", paste("Other:", comment), response))
+
+```
+
+# Add in annotation about 'gateway questions'
+
+```{r}
+
+reformatted_questions <- mutate(reformatted_questions, can_answer="yes")
+
+#"Have not heard about any of these concepts before"--skips rest of survey
+
+no_concepts <- reformatted_questions %>% 
+    filter(question_idx == 2 & 
+               response == "Have not heard about any of these concepts before")
+
+reformatted_questions <- mutate(reformatted_questions, 
+                                can_answer = ifelse(respondent %in% no_concepts$respondent & question_idx > 2, 
+                                                    "no", 
+                                                    can_answer))
+
+#"Do you conduct human subjects or non-human subjects research?"
+#"Non-human subjects only"--skips ELSI
+non_human <- reformatted_questions %>% 
+    filter(question_idx == 7 & response == "Non-human subjects only")
+
+reformatted_questions <- mutate(reformatted_questions, 
+                                can_answer = ifelse(respondent %in% non_human$respondent & question_idx == 8, 
+                                                    "no", 
+                                                    can_answer))
+
+#"As part of your research do you utilize expert labelers to annotate the dataset (e.g. radiologists, pathologists, domain experts annotating images, or text for NLP)."
+#"No"--skips Labeling Provenance and Lineage
+
+no_labels <- reformatted_questions %>% 
+    filter(question_idx == 10 & response == "No")
+
+reformatted_questions <- mutate(reformatted_questions, 
+                                can_answer = ifelse(respondent %in% no_labels$respondent & question_idx == 11, 
+                                                    "no", 
+                                                    can_answer))
+
+#"After you disseminate/release a dataset do you actively update it?"
+#"No"--ends survey
+
+no_update <- reformatted_questions %>% 
+    filter(question_idx == 12 & response == "No")
+
+reformatted_questions <- mutate(reformatted_questions, 
+                                can_answer = ifelse(respondent %in% no_update$respondent & question_idx == 13, 
+                                                    "no", 
+                                                    can_answer))
+
+```
+
+# Figure 2
+
+```{r fig.width = 10, fig.height = 5}
+
+uniq_roles <- filter(reformatted_questions, question_idx == 2) %>%
+    select( respondent, primary_role, role_category, response) %>%
+    unique()
+
+p1 <- ggplot(data=uniq_roles, mapping=aes(x=primary_role, fill=response)) +
+    geom_bar() +
+    scale_fill_brewer(type="qual",palette="Set1", direction=-1, name = "Heard of common data management/curation concepts?") +
+    facet_wrap(~role_category, scales="free_x") +
+    theme_bw() + xlab("")
+
+p1
+
+```
+
+# Figure 3
+
+```{r}
+
+data_handling <- filter(reformatted_questions, question_idx %in% 3:4 & can_answer == "yes")
+
+data_handling <- mutate(data_handling,
+                        resp_fac=factor(response, levels=c("Myself", 
+                                                           "Someone else (a dedicated person in the lab/team)", 
+                                                           "Split across multiple people",
+                                                           "Rely on software logs /tools to capture this",
+                                                           "Other: Does not apply"), 
+                                        labels=c("Myself", 
+                                                 "Dedicated person", 
+                                                 "Multiple people",
+                                                 "Software",
+                                                 "Does not apply"),
+                                        ordered = T))
+
+question_tbl <- tribble(
+    ~question, ~short_question,
+    "Who is responsible for documenting how the data was generated in your lab/team after data generation is complete in order to disseminate or share the data?", "Who provides documentation while data is being generated?",
+    "Who is responsible for documenting how the data was generated in your lab/team while the data is being generated?", "Who provides documentation for dissemination?"
+)
+
+data_handling <- inner_join(data_handling, question_tbl, by="question")
+
+color_map <- setNames(RColorBrewer::brewer.pal(n=5, name="Dark2"), 
+                      c("Myself", "Dedicated person", "Multiple people", "Software", "Does not apply"))
+
+plot_list <- lapply(group_split(data_handling, .by=question_idx), function(x){
+    ggplot(data=x, mapping=aes(x=resp_fac, fill=resp_fac)) +
+        geom_bar() +
+        facet_wrap(~role_category) +
+        scale_x_discrete(drop=F) +
+        scale_fill_manual(values=color_map, guide="none") +
+        theme_bw() + 
+        theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+        xlab("") +
+        ggtitle(x$short_question[1])
+})
+
+wrap_plots(plot_list, ncol=1)
+
+```
+
+# Figure S2
+
+```{r fig.width = 14, fig.height = 5}
+
+response_scores <- tribble(
+    ~response, ~score,
+    "Essential", 5,
+    "Less Essential", 3,
+    "Non-Essential or Redundant", 0,
+    "Unclear Meaning", NA)
+
+reformatted_questions <- inner_join(reformatted_questions, response_scores, by="response")
+
+#make a shorthand for questions
+
+topics <- c("Ethical, Legal and Social Issues (ELSI)", "Dataset Composition",
+            "Maintenance and Distribution", "Labeling Provenance and Lineage", 
+            "Provenance and Lineage in datasets", "Uses of Data")
+
+reformatted_questions <- mutate(reformatted_questions, topic=NA_character_)
+
+for(cur_topic in topics){
+    
+    reformatted_questions <- mutate(reformatted_questions, topic=ifelse(grepl(cur_topic, question, fixed=T), cur_topic, topic))
+}
+
+statement_summary_total <- summarize(reformatted_questions, 
+                                     OverallMean=mean(score, na.rm=T), 
+                                     nclear=sum(is.na(score)==F), 
+                                     n=n(), 
+                                     .by=c("topic", "statement"))
+
+statement_summary_total <- mutate(statement_summary_total,
+                                     prop_clear = nclear / n)
+
+p1 <- ggplot(data=statement_summary_total, mapping=aes(x=topic, y=OverallMean)) +
+    geom_boxplot(outlier.shape = NA) +
+    geom_jitter(height=0, width=.25, mapping=aes(color=prop_clear, size=n)) +
+    geom_hline(yintercept=4, linetype = "dashed") +
+    scale_colour_viridis_c(direction = -1) +
+    theme_bw() + xlab("") + ylab("Avg. Score")
+
+
+p1
+
+```
+
+# Figure 4
+
+```{r}
+
+statement_summary_category <- summarize(reformatted_questions, 
+                                        Mean=mean(score, na.rm=T), 
+                                        nclear=sum(is.na(score)==F), 
+                                        n=n(),
+                                        .by=c("topic", "statement", "role_category"))
+
+statement_summary_category <- mutate(statement_summary_category,
+                                     prop_clear = nclear / n)
+
+p2 <- ggplot(data=statement_summary_category, mapping=aes(x=role_category, y=Mean)) +
+    geom_boxplot() +
+    geom_jitter(height=0, width=.25, mapping=aes(color=prop_clear, size=n)) +
+    geom_hline(yintercept=4, linetype = "dashed") +
+    scale_colour_viridis_c(direction = -1) +
+    facet_wrap(~topic, scales="free_y") +
+    theme_bw() + xlab("") + ylab("Score Summary")
+
+p2
+
+```
+
+# Further summarize the survey (basis of Table S6) 
+
+```{r}
+
+statement_summary_category <- summarize(reformatted_questions, 
+                                        AvgScore=mean(score, na.rm=T), 
+                                        n_clear=sum(is.na(score)==F), 
+                                        n=n(),
+                                        .by=c("topic", "statement", "role_category")) %>%
+    mutate(should_include = ifelse(AvgScore >= 4, "yes", "no"),
+           PercClear = n_clear / n) %>%
+    pivot_wider(id_cols=c("topic", "statement"), names_from="role_category", values_from=c("AvgScore", "PercClear", "should_include"))
+
+
+comment_summary <- pivot_wider(reformatted_questions,
+        id_cols=c("question_idx", "column_idx", "topic","statement"),
+        names_from = respondent, values_from = comment)
+
+
+survey_summary <- inner_join(statement_summary_category, comment_summary, by=c("topic", "statement"))
+
+```
+
+# Figure 5a/b
+
+```{r}
+
+survey_summary <- mutate(survey_summary,
+                          score_cat = case_when(
+                              `should_include_Bench/Clinical` == "yes" & `should_include_DM/Comp` == "yes" ~ "Both",
+                              `should_include_Bench/Clinical` == "no" & `should_include_DM/Comp` == "no" ~ "Neither",
+                              `should_include_Bench/Clinical` == "yes" & `should_include_DM/Comp` == "no" ~ "Only Bench/Clinical",
+                              `should_include_Bench/Clinical` == "no" & `should_include_DM/Comp` == "yes" ~ "Only DM/Comp",
+                          ))
+
+#make a table of points to highlight indicated by letter
+
+highlight_points <- filter(survey_summary,
+                          (`AvgScore_Bench/Clinical` == 5.0 &  `AvgScore_DM/Comp` == 5.0) | 
+                              (`AvgScore_Bench/Clinical` < 3.0 &  `AvgScore_DM/Comp` >= 4.0) |
+                              (`AvgScore_Bench/Clinical` >= 4.0 &  `AvgScore_DM/Comp` < 3.75))
+
+highlight_points <- arrange(highlight_points,
+                            score_cat,
+                            desc(mapply(function(x, y) x+y, `AvgScore_Bench/Clinical`, `AvgScore_DM/Comp`))) %>%
+    mutate(letter=LETTERS[seq_along(statement)])
+
+#convert the x-axis to a tibble and merge
+
+label_pos <- tribble(
+    ~score_cat, ~x, ~y,
+    "Both", 5, 5.5,
+    "Neither", 2, 1.5,
+    "Only Bench/Clinical", 5, 1.5,
+    "Only DM/Comp", 2, 5.5
+)
+
+use_cols <- setNames(scales::hue_pal()(4), label_pos$score_cat)
+
+p1 <- ggplot(data=survey_summary, mapping=aes(x=`AvgScore_Bench/Clinical`, y=`AvgScore_DM/Comp`, fill=score_cat)) +
+    geom_point(size=3, shape=21) +
+    geom_vline(xintercept = 4.0, linetype="dashed") +
+    geom_hline(yintercept = 4.0, linetype="dashed") +
+    geom_text(data=label_pos, mapping=aes(x=x, y=y, label=score_cat, color=score_cat)) +
+    scale_color_manual(values = use_cols,guide="none") +
+    scale_fill_manual(values = use_cols,guide="none") +
+    geom_label_repel(data=highlight_points, mapping=aes(label=letter, color=score_cat), min.segment.length = 0, box.padding = 0.5, fill="white") +
+    ylim(c(1.25, 5.5)) +
+    xlim(c(1, 5.5)) +
+    theme_bw() +
+    xlab("Avg. Score Bench/Clinical") +
+    ylab("Avg. Score_DM/Comp")
+
+#categorize the percent clear values as there are a lot of overlapping values to plot directly 
+kept_fields <- survey_summary %>%
+    mutate(`pclear_bin_Bench/Clinical` = cut(`PercClear_Bench/Clinical`*100, breaks=c(0, 70, 95, 100)),
+           `pclear_bin_DM/Comp` = cut(`PercClear_DM/Comp`*100, breaks=c(0, 70, 95, 100))) 
+
+kept_fields <- left_join(kept_fields, select(highlight_points, letter, statement), by="statement")
+
+kept_fields <- mutate(kept_fields, letter = ifelse(is.na(letter), "", letter))
+
+pos <- position_jitter(width=.4, height=.4, seed = 12232)
+
+p2 <- ggplot(data=kept_fields, mapping=aes(x=`pclear_bin_Bench/Clinical`, y=`pclear_bin_DM/Comp`)) +
+    geom_tile(fill="white", color="black", na.rm=F) +
+    geom_label_repel(position=pos, mapping=aes(label=letter, color=score_cat), min.segment.length = 0, box.padding = 0.5, fill="white", max.overlaps = 10000) +
+    geom_point(position=pos, shape=21, size=3, mapping=aes(fill=score_cat)) +
+    annotate("text", x=c(1, 2, 3, 1, 2, 3, 1, 2, 3), y=c(3, 3, 3, 2, 2, 2, 1, 1, 1), label=1:9) +
+    scale_color_manual(values = use_cols,guide="none") +
+    scale_fill_manual(values = use_cols,guide="none") +
+    theme_classic() +
+    xlab("Prop Clear Bins (Bench/Clinical)") +
+    ylab("Prop Clear Bins (DM/Comp)")
+    
+p1 + p2 + plot_layout(design="1122")
+
+```
+
+# Figure 5c (table)
+
+```{r}
+
+select(highlight_points, letter, topic, statement, 
+                                 `AvgScore_Bench/Clinical`, `AvgScore_DM/Comp`)
+
+```
