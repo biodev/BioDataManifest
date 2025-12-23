@@ -4,7 +4,7 @@ Tools for generating Biomedical Data Manifest HTML pages from survey results or 
 
 ## Overview
 
-The Biomedical Data Manifest was designed to simplify the process and burden of documentation for biomedical data generators while emphasizing important goals such as transparency, accuracy and compliance for the dissemination process. This package is meant to be used with a Microsoft Forms (or similar) [survey](https://forms.office.com/Pages/ShareFormPage.aspx?id=V3lz4rj6fk2U9pvWr59xWH1ybZHaUkFGm97Ts1oa_d5UOVM2V1g0M0NOWkoxSDRTWEY5SzNaTExWQS4u&sharetoken=DisvTFgeMAcgV2zYQ6ue) which contains the fields to be filled out by the data generator.
+The Biomedical Data Manifest was designed to simplify the process and burden of documentation for biomedical data generators while emphasizing important goals such as transparency, accuracy and compliance for the dissemination process. This package is meant to be used with a Microsoft Forms (or similar) [survey](https://forms.office.com/Pages/ShareFormPage.aspx?id=V3lz4rj6fk2U9pvWr59xWH1ybZHaUkFGm97Ts1oa_d5UOVM2V1g0M0NOWkoxSDRTWEY5SzNaTExWQS4u&sharetoken=DisvTFgeMAcgV2zYQ6ue) which contains the fields to be filled out by the data generator. An alternate Microsoft Word version of the survey is also provided [here](inst/extdata/Biomedical%20Data%20Manifest_Survey.docx).
 
 See Bottomly et al *In Preparation* for more details.
 
