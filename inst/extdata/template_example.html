@@ -8,18 +8,22 @@
 	<title>CITRP BioMedical Data Manifest</title>
 
 	<!-- Bootstrap -->
-	<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+		crossorigin="anonymous"></script>
 	
 	<script type="text/javascript">
         const persona_type = "Data Managers/Computationalists";
 		const collapse_div_names = ["InstDiag", "ClinDiag", "InstDiag", "SpecDiag"];
 
-        $(document).ready(function(){
+        $(document).ready(function () {
             
-			if (persona_type == "computationalist"){
+			if (persona_type == "computationalist") {
 
-				for(let div_name in collapse_div_names){
+				for (let div_name in collapse_div_names) {
 					$("#" + collapse_div_names[div_name]).removeClass("show");
 					$("#" + collapse_div_names[div_name] + "Cntrl").attr("aria-expanded", "false")
 				}
@@ -44,11 +48,10 @@
 		}
 
 		/* from https://stackoverflow.com/questions/68467572/bootstrap-responsive-table-with-scrollable-tbody */
-		.tbodyDiv{
-			max-height: clamp(5em,50vh,1000px);*/
+		.tbodyDiv {
+			max-height: clamp(5em, 50vh, 1000px);
 			overflow: auto;
 		}
-
 	</style>
 </head>
 
@@ -151,7 +154,8 @@
                     </ul>
 			</div>
 			<div class="col-md-8 border">
-				<ul class="list-unstyled" <li><strong>Dataset Contacts:</strong>
+				<ul class="list-unstyled">
+				<li><strong>Dataset Contacts:</strong>
 					<ul>
 						<li>Dr. Jane Doe (Lead Author, CRI)</li>
                     	<li>Dr. John Smith (Co-author, University of Medicine)</li>
@@ -305,7 +309,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-6 border">
-				<ul >
+				<ul>
 					<li><strong>REB/IRB approval for data collection?:</strong> Yes</li>
 					
 						

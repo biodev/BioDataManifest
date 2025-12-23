@@ -37,7 +37,9 @@ b)  Bench or clinical researchers: (Bench/Clinical)
 library(BioDataManifest)
 
 manifest_from_excel(
-    "Biomedical_Data_Manifest_Template_Example.xlsx", 
+    system.file(
+        file.path("extdata", "Biomedical_Data_Manifest_Template_Example.xlsx"), 
+        package="BioDataManifest"), 
     persona = "DM/Comp", 
     output.file = "template_example.html"
 )
@@ -50,7 +52,7 @@ The resulting [template_example.html](inst/extdata/template_example.html) HTML f
 
 Available projects are those from the [Genomic Data Commons](https://portal.gdc.cancer.gov/analysis_page?app=Projects).
 
-NOTE: This functionality is experimental and fairly fragile due to a lot of information not being available from dbGaP or GDC's APIs and instead having to rely on more error-prone parsing of webpages.
+NOTE: This functionality is experimental and fairly fragile due to a lot of information not being available from dbGaP or GDC's APIs and instead having to rely on more error-prone scraping of webpages.
 
 ```{r}
 
