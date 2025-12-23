@@ -158,6 +158,8 @@ manifest_from_excel <- function(excel.file, persona=c("DM/Comp", "Bench/Clinical
     
     names(sens.attr.tbl) <- c("header", "value")
     
+    sens.attr.tbl$value <- sub("^\\s+", "", sens.attr.tbl$value)
+
     split.data$CSensTable <- sens.attr.tbl
     
     
@@ -187,7 +189,7 @@ manifest_from_excel <- function(excel.file, persona=c("DM/Comp", "Bench/Clinical
     
     for(i in markdown.vars){
         if (all(is.na(split.data[[i]]))==FALSE){
-            split.data[[i]] <- knitr::knit2html(text=split.data[[i]], template=F)
+            split.data[[i]] <- sub("\\n$", "", knitr::knit2html(text=split.data[[i]], template=F))
         }
     }
     
@@ -197,9 +199,9 @@ manifest_from_excel <- function(excel.file, persona=c("DM/Comp", "Bench/Clinical
     list.vals <- dplyr::filter(cur.format,  `Variable Type` == "list") |>
         _$`Variable Name` |>
         intersect(names(split.data))
-    
+
     split.data.proc <- .filter.variable.list(split.data, optional.vals, list.vals)
-    
+
     tmp.rend <- do.call(render, append(list(fs::path(system.file("extdata/bio_data_manif_tmpl.html", package="BioDataManifest")),
                                             .config=jinjar_config(loader = package_loader("BioDataManifest", "extdata"))), 
                                        split.data.proc))

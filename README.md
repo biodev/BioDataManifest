@@ -37,7 +37,9 @@ b)  Bench or clinical researchers: (Bench/Clinical)
 library(BioDataManifest)
 
 manifest_from_excel(
-    "Biomedical_Data_Manifest_Template_Example.xlsx", 
+    system.file(
+        file.path("extdata", "Biomedical_Data_Manifest_Template_Example.xlsx"), 
+        package="BioDataManifest"), 
     persona = "DM/Comp", 
     output.file = "template_example.html"
 )

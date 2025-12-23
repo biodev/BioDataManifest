@@ -1,6 +1,6 @@
 Package: BioDataManifest
 Title: Tools for Rendering Biomedical Data Manifests
-Version: 0.99.3
+Version: 0.99.4
 Authors@R: c(person("Daniel", "Bottomly", role=c("cre", "aut"), email="bottomly@ohsu.edu"),
 	person("Shannon", "McWeeney", role="aut"))
 Description: This package has two main functions.  It can render a Biomedical Data Manifest HTML
@@ -9,7 +9,7 @@ Description: This package has two main functions.  It can render a Biomedical Da
     provides a summary of a particular dataset both in terms of composition  as well as any ethical, 
     legal and social information that can be gathered.
 Depends: R (>= 4.3.1), GenomicDataCommons
-Imports: rlang, fs, stringr, scales, rvest, tibble, readr, readxl, tidyr, dplyr, httr, knitr, jinjar, ggplot2
+Imports: rlang, fs, stringr, scales, rvest, tibble, readr, readxl, tidyr, dplyr, httr, knitr, jinjar, ggplot2, markdown
 Encoding: UTF-8
 License: GPL-3
 RoxygenNote: 7.2.3
